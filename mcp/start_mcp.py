@@ -3,6 +3,12 @@
 Script to start the CrewAI MCP server.
 """
 import argparse
+import sys
+import os
+
+# Adiciona o diretório pai ao caminho para poder importar o módulo mcp
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from mcp.server import start_server
 
 def main():

@@ -1,9 +1,25 @@
 """
 MCP Tool implementations for CrewAI.
 """
+import sys
+import os
 from typing import Dict, Any, List, Optional, Type
 from pydantic import BaseModel, Field
-from src.crewai.tools import BaseTool
+
+# Try to import BaseTool, otherwise create a mock
+try:
+    from src.crewai.tools import BaseTool
+except ImportError:
+    # Provide a mock implementation if BaseTool is not available
+    print("Warning: Could not import BaseTool from crewai. Using mock implementation.")
+    
+    class BaseTool:
+        name: str = "base_tool"
+        description: str = "Base tool description"
+        args_schema = None
+        
+        def _run(self, **kwargs):
+            return "Base tool implementation"
 
 class WebSearchToolInput(BaseModel):
     """Input schema for WebSearchTool."""

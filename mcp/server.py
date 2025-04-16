@@ -7,20 +7,23 @@ import uvicorn
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from typing import Dict, Any, List, Optional
+import importlib
+import sys
 
 # Import CrewAI tools
-import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.crewai.tools.custom_tool import MyCustomTool
 from mcp.tools import MCP_TOOLS
 
+# Try to import custom tool, but continue if it doesn't exist
+try:
+    from src.crewai.tools.custom_tool import MyCustomTool
+    custom_tool = MyCustomTool()
+    ALL_TOOLS = [custom_tool] + MCP_TOOLS
+except ImportError:
+    print("Warning: Custom tool not found. Continuing with standard tools only.")
+    ALL_TOOLS = MCP_TOOLS
+
 app = FastAPI(title="CrewAI MCP Server")
-
-# Initialize tools
-custom_tool = MyCustomTool()
-
-# Combine all tools
-ALL_TOOLS = [custom_tool] + MCP_TOOLS
 
 # Create a lookup dictionary for easier access
 TOOL_MAP = {tool.name: tool for tool in ALL_TOOLS}
@@ -42,14 +45,26 @@ async def list_tools():
         
         if hasattr(tool, 'args_schema'):
             schema_model = tool.args_schema
-            for field_name, field in schema_model.__fields__.items():
-                field_info = field.field_info
-                properties[field_name] = {
-                    "type": "string",  # Simplified for the example
-                    "description": field_info.description or ""
-                }
-                if field_info.default == ...:  # Means it's required
-                    required.append(field_name)
+            
+            # Handle both Pydantic v1 and v2
+            try:
+                # Pydantic v1 approach
+                if hasattr(schema_model, '__fields__'):
+                    for field_name, field in schema_model.__fields__.items():
+                        field_info = field.field_info
+                        properties[field_name] = {
+                            "type": "string",  # Simplified for the example
+                            "description": field_info.description or ""
+                        }
+                        if field_info.default == ...:  # Means it's required
+                            required.append(field_name)
+                # Pydantic v2 approach
+                else:
+                    model_schema = schema_model.model_json_schema()
+                    properties = model_schema.get("properties", {})
+                    required = model_schema.get("required", [])
+            except Exception as e:
+                print(f"Warning: Could not parse schema for tool {tool.name}: {str(e)}")
         
         tools_list.append({
             "name": tool.name,
