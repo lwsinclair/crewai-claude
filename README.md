@@ -39,6 +39,37 @@ This command initializes the crewai Crew, assembling the agents and assigning th
 
 This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
 
+## Model Control Protocol (MCP) Integration
+
+This project includes an MCP server that exposes CrewAI tools through a REST API. This allows Claude and other LLMs to access and utilize CrewAI tools.
+
+### Starting the MCP Server
+
+```bash
+$ start_mcp
+```
+
+Or you can run it directly:
+
+```bash
+$ python -m mcp.start_mcp
+```
+
+By default, the server runs on `0.0.0.0:8000`. You can customize this:
+
+```bash
+$ start_mcp --host 127.0.0.1 --port 9000
+```
+
+### Available MCP Tools
+
+The MCP server provides access to the following tools:
+- Custom CrewAI tools
+- Web search functionality
+- Data analysis capabilities
+
+For more information, see the [MCP README](mcp/README.md).
+
 ## Understanding Your Crew
 
 The crewai Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
