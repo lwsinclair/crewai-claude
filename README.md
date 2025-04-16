@@ -29,6 +29,8 @@ crewai install
 
 ## Running the Project
 
+### Sequential Crew
+
 To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
 
 ```bash
@@ -38,6 +40,24 @@ $ crewai run
 This command initializes the crewai Crew, assembling the agents and assigning them tasks as defined in your configuration.
 
 This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+
+### Hierarchical Crew
+
+This project also includes a hierarchical implementation where each agent is specialized in using a specific tool. To run the hierarchical crew:
+
+```bash
+$ hierarchical
+```
+
+or:
+
+```bash
+$ run_hierarchical
+```
+
+This will create a `hierarchical_result.md` file with the output from the hierarchical process.
+
+Learn more about the hierarchical implementation in the [Hierarchical README](src/crewai/hierarchical/README.md).
 
 ## Model Control Protocol (MCP) Integration
 
@@ -52,7 +72,7 @@ $ start_mcp
 Or you can run it directly:
 
 ```bash
-$ python -m mcp.start_mcp
+$ python -m mcp.run_server
 ```
 
 By default, the server runs on `0.0.0.0:8000`. You can customize this:

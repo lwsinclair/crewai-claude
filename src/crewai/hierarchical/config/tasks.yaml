@@ -1,0 +1,43 @@
+manager_task:
+  description: >
+    You are tasked with solving the following problem: "{query}".
+    Break down this problem into smaller tasks, delegate them to the appropriate specialists,
+    and synthesize their outputs into a coherent answer. Consider what information would be
+    needed and which specialist would be best equipped to provide it.
+  expected_output: >
+    A comprehensive answer to the query that synthesizes information from all specialists.
+    The answer should be well-structured, informative, and address all aspects of the query.
+  agent: manager
+
+web_research_task:
+  description: >
+    Use your web search tool to find up-to-date information about: "{web_query}".
+    Provide a concise summary of the most relevant information, including any key facts,
+    statistics, or developments. Be sure to include information from multiple reliable
+    sources when available.
+  expected_output: >
+    A well-organized summary of the web search results, highlighting the most important 
+    and relevant information. Include specific facts, figures, and insights that directly
+    relate to the query.
+  agent: web_researcher
+
+data_analysis_task:
+  description: >
+    Analyze the following data: "{data_set}" using the analysis type: "{analysis_type}".
+    Identify key patterns, trends, or insights that would be valuable for understanding
+    the data in context of the overall query.
+  expected_output: >
+    A detailed analysis report that identifies the most significant findings from the data.
+    Include specific metrics, trends, and recommendations based on your analysis.
+  agent: data_analyst
+
+custom_tool_task:
+  description: >
+    Using the specialized tool at your disposal, address the following specific aspect
+    of our investigation: "{custom_query}". Apply your expertise to extract the most
+    valuable insights possible from the tool.
+  expected_output: >
+    A report detailing the results obtained from the custom tool, with clear explanations
+    of how these results contribute to addressing the overall query. Include any specific
+    outputs and your interpretation of their significance.
+  agent: custom_tool_specialist

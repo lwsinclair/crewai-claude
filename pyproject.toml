@@ -18,6 +18,8 @@ train = "crewai.main:train"
 replay = "crewai.main:replay"
 test = "crewai.main:test"
 start_mcp = "mcp.start_mcp:main"
+hierarchical = "crewai.hierarchical.main:main"
+run_hierarchical = "crewai.hierarchical.main:main"
 
 [build-system]
 requires = ["hatchling"]
